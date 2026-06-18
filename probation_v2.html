@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แบบประเมิน Probation P1–P9 v2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:#F5F5F3;color:#1a1a18;font-size:14px}
+.page{max-width:900px;margin:0 auto;padding:1.5rem 1rem 6rem}
+h1{font-size:20px;font-weight:700;margin-bottom:3px}
+.sub{font-size:12px;color:#888;margin-bottom:1.25rem}
+.lnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem}
+.gnav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem}
+.gbtn{padding:4px 11px;border-radius:6px;border:1px solid #ddd;background:#fff;font-size:11px;cursor:pointer;font-family:inherit;color:#666;transition:all .12s}
+.gbtn.active{background:#555;color:#fff;border-color:#555}
+.lbtn{padding:6px 15px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;color:#555}
+.lbtn:hover{background:#f0f0ee}
+.lbtn.active{background:#1a1a18;color:#fff;border-color:#1a1a18;font-weight:600}
+.lpanel{display:none}.lpanel.active{display:block}
+.lhdr{background:#fff;border:1px solid #e0e0dd;border-radius:12px;padding:.9rem 1.2rem;margin-bottom:.85rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.lhdr-left h3{font-size:16px;font-weight:700}
+.lhdr-left p{font-size:11px;color:#aaa;margin-top:2px}
+.tlbar{display:flex;gap:5px;margin-bottom:.85rem;flex-wrap:wrap;align-items:center}
+.tllbl{font-size:11px;color:#bbb;margin-right:3px}
+.tlbtn{padding:4px 11px;border-radius:6px;font-size:11px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#888;font-family:inherit;transition:all .12s}
+.tlbtn.aall.on{background:#1a1a18;color:#fff;border-color:#1a1a18}
+.tlbtn.a30.on{background:#dbeafe;color:#1d4ed8;border-color:#93c5fd}
+.tlbtn.a60.on{background:#fef3c7;color:#92400e;border-color:#fcd34d}
+.tlbtn.a90.on{background:#dcfce7;color:#166534;border-color:#86efac}
+/* category block */
+.cblock{border:1px solid #e0e0dd;border-radius:12px;background:#fff;margin-bottom:9px;overflow:hidden}
+.chead{padding:.55rem .95rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee;background:#fafaf8}
+.chead-l{display:flex;align-items:center;gap:8px}
+.cbadge{font-size:11px;padding:2px 10px;border-radius:6px;font-weight:700;border:1px solid transparent}
+.cwt{font-size:11px;color:#bbb}
+.wbar-wrap{text-align:right}
+.wbar-lbl{font-size:10px;color:#ccc;margin-bottom:2px}
+.wbar{height:4px;width:80px;background:#eee;border-radius:2px;overflow:hidden;margin-left:auto}
+.wfill{height:100%;border-radius:2px;transition:width .3s}
+/* item */
+.iblock{border-bottom:1px solid #f2f2f0}
+.iblock:last-child{border-bottom:none}
+.iblock.htl{display:none}
+.itop{padding:.6rem .95rem;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;cursor:pointer;user-select:none}
+.itop:hover{background:#fafaf8}
+.itl{flex:1;min-width:0}
+.ititle{font-size:13px;font-weight:600;color:#1a1a18;line-height:1.4}
+.imeta{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.ttag{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:700}
+.ttag.t30{background:#dbeafe;color:#1d4ed8}
+.ttag.t60{background:#fef3c7;color:#92400e}
+.ttag.t90{background:#dcfce7;color:#166534}
+.ktag{font-size:10px;color:#888;padding:2px 7px;border:1px solid #e8e8e5;border-radius:5px;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbtns{display:flex;gap:4px;align-items:center;flex-shrink:0}
+.sb{width:28px;height:28px;border:1px solid #e0e0dd;border-radius:6px;background:#f7f7f5;color:#aaa;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;transition:all .1s}
+.sb:hover{background:#eee;border-color:#ccc}
+.sb.s1.on{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.sb.s2.on{background:#fef9c3;color:#78350f;border-color:#fde047}
+.sb.s3.on{background:#dcfce7;color:#14532d;border-color:#86efac}
+.sb.s4.on{background:#d1fae5;color:#064e3b;border-color:#34d399}
+.chev{font-size:10px;color:#ccc;margin-left:4px;transition:transform .18s;flex-shrink:0}
+.chev.open{transform:rotate(180deg)}
+/* rubric panel */
+.rpanel{display:none;border-top:1px solid #f2f2f0}
+.rpanel.open{display:block}
+/* deliverable + impact row */
+.di-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #f2f2f0}
+.di-cell{padding:.55rem .95rem;background:#fffdf7}
+.di-cell:first-child{border-right:1px solid #f2f2f0}
+.di-label{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.di-val{font-size:12px;color:#444;line-height:1.45}
+/* rubric grid */
+.rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#fafaf8}
+.rcell{padding:.55rem .7rem;border-right:1px solid #efefed}
+.rcell:last-child{border-right:none}
+.rscore{font-size:11px;font-weight:700;margin-bottom:3px}
+.rscore.r1{color:#b91c1c}.rscore.r2{color:#92400e}.rscore.r3{color:#15803d}.rscore.r4{color:#047857}
+.rdesc{font-size:11px;color:#555;line-height:1.5}
+.rconseq{font-size:10px;color:#b91c1c;margin-top:3px;font-style:italic}
+/* comment */
+.cmtarea{padding:.45rem .95rem;border-top:1px solid #f2f2f0;background:#fff}
+.cmtarea textarea{width:100%;font-size:12px;padding:5px 8px;border:1px solid #e0e0dd;border-radius:6px;background:#fafaf8;color:#1a1a18;resize:none;min-height:36px;font-family:inherit}
+.cmtarea textarea:focus{outline:none;border-color:#aaa;background:#fff}
+/* summary */
+.sumbar{position:sticky;bottom:0;background:#fff;border:1px solid #ddd;border-radius:12px;padding:.7rem 1.2rem;margin-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 -2px 16px rgba(0,0,0,.07)}
+.sgrp{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.si{text-align:center;min-width:44px}
+.sv{font-size:20px;font-weight:700;color:#1a1a18}
+.sl{font-size:10px;color:#bbb;margin-top:1px}
+.rchip{padding:6px 16px;border-radius:8px;font-size:13px;font-weight:700;border:1px solid #e0e0dd}
+.rchip.pass{background:#dcfce7;color:#15803d;border-color:#86efac}
+.rchip.warn{background:#fef9c3;color:#78350f;border-color:#fde047}
+.rchip.fail{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.rchip.pend{background:#f7f7f5;color:#bbb}
+.score-pill{font-size:12px;padding:5px 12px;border:1px solid #e0e0dd;border-radius:8px;background:#f7f7f5;color:#888}
+.score-pill b{color:#1a1a18}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:#999}
+.legdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+/* AI question panel */
+.qpanel{border-top:1px solid #f2f2f0;background:#f8f9ff}
+.qpanel-head{padding:.5rem .95rem;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.qpanel-head-left{display:flex;align-items:center;gap:8px}
+.qpanel-label{font-size:11px;font-weight:700;color:#4338ca;letter-spacing:.03em}
+.qpanel-sub{font-size:10px;color:#aaa}
+.btn-genq{padding:4px 13px;border-radius:6px;border:1px solid #818cf8;background:#eef2ff;color:#4338ca;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap}
+.btn-genq:hover{background:#e0e7ff;border-color:#6366f1}
+.btn-genq:disabled{opacity:.5;cursor:not-allowed}
+.btn-genq.loading{background:#e0e7ff;color:#6366f1}
+.qlist{padding:0 .95rem .75rem;display:none}
+.qlist.visible{display:block}
+.qitem{display:flex;gap:8px;padding:.45rem 0;border-bottom:1px solid #eef}
+.qitem:last-child{border-bottom:none}
+.qnum{font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;padding-top:1px;min-width:18px}
+.qtext{font-size:12px;color:#333;line-height:1.55;flex:1}
+.qtype{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;flex-shrink:0;white-space:nowrap;align-self:flex-start;margin-top:2px}
+.qtype.behavioral{background:#fef3c7;color:#92400e}
+.qtype.situational{background:#dbeafe;color:#1e40af}
+.qtype.output{background:#dcfce7;color:#166534}
+.qtype.probe{background:#fce7f3;color:#9d174d}
+.qtype.challenge{background:#fee2e2;color:#991b1b}
+.q-ans{margin-top:5px;width:100%;font-size:11px;padding:4px 7px;border:1px solid #e0e0f0;border-radius:5px;background:#fff;color:#1a1a18;resize:none;font-family:inherit;min-height:32px}
+.q-ans:focus{outline:none;border-color:#818cf8}
+.qscore-row{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.qsb{padding:2px 9px;border-radius:5px;border:1px solid #e0e0f0;background:#f5f5f3;color:#aaa;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .1s}
+.qsb:hover{border-color:#818cf8;color:#4338ca}
+.qsb.qs1.on{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.qsb.qs2.on{background:#fef9c3;color:#78350f;border-color:#fde047}
+.qsb.qs3.on{background:#dcfce7;color:#14532d;border-color:#86efac}
+.qsb.qs4.on{background:#d1fae5;color:#064e3b;border-color:#34d399}
+.qscore-lbl{font-size:10px;color:#bbb;align-self:center;margin-right:2px}
+.q-spinner{display:inline-block;width:12px;height:12px;border:2px solid #c7d2fe;border-top-color:#6366f1;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media print{.qpanel{display:none!important}}
+/* export button */
+.export-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;background:#fff;border:1px solid #e0e0dd;border-radius:12px}
+.export-bar label{font-size:12px;color:#888;white-space:nowrap}
+.export-bar input,.export-bar select{font-size:12px;padding:5px 9px;border:1px solid #ddd;border-radius:7px;background:#fafaf8;color:#1a1a18;font-family:inherit;outline:none}
+.export-bar input:focus,.export-bar select:focus{border-color:#aaa;background:#fff}
+.export-bar input[type=text]{width:150px}
+.export-bar input[type=date]{width:140px}
+.btn-export{padding:6px 16px;border-radius:8px;border:none;background:#1a1a18;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-export:hover{background:#333}
+.btn-export:disabled{background:#ccc;cursor:not-allowed}
+/* print/pdf styles */
+@media print{
+  body{background:#fff;font-size:11px}
+  .export-bar,.gnav,.lnav,.tlbar,.sumbar,.legend{display:none!important}
+  .lpanel{display:block!important}
+  .lhdr{break-inside:avoid}
+  .cblock{break-inside:avoid;margin-bottom:6px;border:1px solid #ddd}
+  .rpanel{display:block!important}
+  .itop{cursor:default}
+  .sbtns{display:none}
+  .chev{display:none}
+  .score-display{display:inline-block!important}
+  .cmtarea textarea{border:none;background:transparent;resize:none;padding:0}
+  .pdf-header{display:block!important}
+  .page{padding:0;max-width:100%}
+}
+.pdf-header{display:none;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid #1a1a18}
+.pdf-header h2{font-size:18px;font-weight:700;margin-bottom:8px}
+.pdf-header .pdf-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px}
+.pdf-header .pdf-meta-item label{color:#888;display:block;font-size:10px;margin-bottom:2px}
+.pdf-header .pdf-meta-item span{font-weight:600}
+.pdf-result-banner{padding:.6rem 1rem;border-radius:8px;font-size:14px;font-weight:700;margin-bottom:1rem;display:none}
+.score-display{display:none;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px}
+.score-display.s1{background:#fee2e2;color:#991b1b}
+.score-display.s2{background:#fef9c3;color:#78350f}
+.score-display.s3{background:#dcfce7;color:#14532d}
+.score-display.s4{background:#d1fae5;color:#064e3b}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>แบบประเมิน Probation — Behavioral + Deliverable + Impact</h1>
+<p class="sub">P1–P9 · Rubric 1–4 พร้อม KPI เข้มข้น · Deliverable & Business Impact · Timeline 30/60/90 วัน · น้ำหนักถ่วงตามหมวด</p>
+
+<div class="legend">
+  <span class="leg"><span class="legdot" style="background:#93c5fd"></span>วันที่ 1–30</span>
+  <span class="leg"><span class="legdot" style="background:#fcd34d"></span>วันที่ 31–60</span>
+  <span class="leg"><span class="legdot" style="background:#86efac"></span>วันที่ 61–90</span>
+  <span style="width:1px;height:14px;background:#ddd;display:inline-block;margin:0 4px"></span>
+  <span class="leg"><span class="legdot" style="background:#fca5a5"></span>1=ต้องปรับปรุง</span>
+  <span class="leg"><span class="legdot" style="background:#fde047"></span>2=พอใช้</span>
+  <span class="leg"><span class="legdot" style="background:#86efac"></span>3=ดี</span>
+  <span class="leg"><span class="legdot" style="background:#34d399"></span>4=ดีเยี่ยม</span>
+</div>
+
+<!-- PDF header (visible only when printing) -->
+<div class="pdf-header" id="pdfHeader">
+  <h2>แบบประเมิน Probation — <span id="ph-name"></span></h2>
+  <div class="pdf-meta">
+    <div class="pdf-meta-item"><label>ตำแหน่ง / Level</label><span id="ph-level"></span></div>
+    <div class="pdf-meta-item"><label>แผนก</label><span id="ph-dept"></span></div>
+    <div class="pdf-meta-item"><label>ผู้ประเมิน</label><span id="ph-evaluator"></span></div>
+    <div class="pdf-meta-item"><label>วันเริ่มงาน</label><span id="ph-start"></span></div>
+    <div class="pdf-meta-item"><label>วันประเมิน</label><span id="ph-evaldate"></span></div>
+    <div class="pdf-meta-item"><label>คะแนนรวม (ถ่วงน้ำหนัก)</label><span id="ph-score"></span></div>
+  </div>
+</div>
+<div class="pdf-result-banner" id="pdfBanner"></div>
+
+<!-- Employee info + export bar -->
+<div class="export-bar" id="exportBar">
+  <label>ชื่อพนักงาน</label>
+  <input type="text" id="empName" placeholder="ชื่อ-นามสกุล" />
+  <label>แผนก</label>
+  <input type="text" id="empDept" placeholder="ชื่อแผนก" />
+  <label>ผู้ประเมิน</label>
+  <input type="text" id="evalName" placeholder="ชื่อผู้ประเมิน" />
+  <label>วันเริ่มงาน</label>
+  <input type="date" id="empStart" />
+  <label>วันประเมิน</label>
+  <input type="date" id="evalDate" />
+  <button class="btn-export" onclick="exportPDF()">⬇ Export PDF</button>
+</div>
+
+<div class="gnav" id="gnav"></div>
+<div class="lnav" id="lnav"></div>
+<div id="lcon"></div>
+
+<div class="sumbar">
+  <div class="sgrp">
+    <div class="si"><div class="sv" id="xd">0</div><div class="sl">ประเมินแล้ว</div></div>
+    <div class="si"><div class="sv" id="xt">0</div><div class="sl">ทั้งหมด</div></div>
+    <div class="si"><div class="sv" id="xa">—</div><div class="sl">คะแนนถ่วงน้ำหนัก</div></div>
+    <div class="si"><div class="sv" id="xp">—</div><div class="sl">ความสมบูรณ์</div></div>
+  </div>
+  <div class="rchip pend" id="xr">รอประเมิน</div>
+</div>
+</div>
+
+<script>
+// helper
+function item(t,k,tl,dlv,imp,r1,r2,r3,r4){
+  return {t,k,tl,dlv,imp,r:[r1,r2,r3,r4]};
+}
+
+const LV = {
+/* ═══════════════════════════════════════════════════
+   P1  JUNIOR
+═══════════════════════════════════════════════════ */
+P1:{g:"Operation",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:20,items:[
+item("Positive Thinking","ไม่มี incident ทัศนคติลบ และ peer feedback ≥3.2/4","t30",
+"บันทึก incident log รายสัปดาห์ (0 incident)","บรรยากาศทีมไม่เป็นพิษ ประสิทธิภาพทีมไม่ลด",
+"บ่น/ทัศนคติลบ ≥3 ครั้ง/สัปดาห์ มี incident log ต้องเตือนเป็นทางการ",
+"บ่นบ้างแต่หยุดเมื่อถูกแจ้ง peer ≥2.8 ไม่ถึง 3.2",
+"ทัศนคติบวกสม่ำเสมอ peer ≥3.2 มองหาทางออก ไม่โทษผู้อื่น",
+"เป็น role model ทัศนคติบวก peer ≥3.7 ช่วย lift mood ทีมได้จริง"),
+
+item("ความซื่อสัตย์","แจ้งปัญหาก่อนถูกถาม 100% ภายใน 1 ชม.","t30",
+"Error log + timestamp ว่าแจ้งเมื่อไหร่ ทุกครั้ง","ลดความเสียหายจากการปิดบัง error ≥ 0 ครั้ง",
+"ปิดบัง error ≥2 ครั้ง ถูกค้นพบโดยคนอื่น ถือเป็น integrity breach",
+"แจ้งแต่ช้า >2 ชม. หรือต้องถามก่อน ≥2 ครั้ง/เดือน",
+"แจ้งทุกครั้งภายใน 1 ชม. ด้วยตนเอง ไม่รอถาม",
+"แจ้งภายใน 30 นาที พร้อม root cause เบื้องต้น และแนวทางแก้"),
+
+item("Ownership","งานส่งตรงเวลา ≥95% ไม่ต้องตาม","t30",
+"Task completion log รายสัปดาห์ พร้อม timestamp","ลดเวลา supervisor ตามงาน ≥80%",
+"ส่งช้า >3 ครั้ง/เดือน หรือต้องตามงานทุกชิ้น",
+"ส่งตรงเวลา 80–94% ต้องเตือนบ้าง",
+"ส่งตรงเวลา ≥95% ไม่ต้องตาม แจ้งล่วงหน้าเมื่อเสี่ยงล่าช้า",
+"ส่งตรงเวลา 100% แจ้ง early warning ≥24 ชม. ทุกครั้งที่มีความเสี่ยง"),
+
+item("ทัศนคติต่อ Feedback","นำ feedback ไปปรับปรุงได้ภายใน 3 วัน ≥90% ของครั้ง","t30",
+"Feedback log + before/after behavior พร้อม evidence","ลดการเกิด error ซ้ำจาก feedback ≥50%",
+"ต่อต้านหรือเพิกเฉย feedback แสดงออกทางลบ error ซ้ำ >50%",
+"รับ feedback แต่ไม่ปรับปรุงจริง error ซ้ำ 30–50%",
+"ปรับปรุงได้ภายใน 3 วัน ≥90% error ซ้ำ <20%",
+"ปรับปรุงทันทีภายใน 1 วัน ขอ follow-up เองเพื่อยืนยัน error ซ้ำ 0%"),
+]},
+
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:35,items:[
+item("ปฏิบัติตาม SOP พื้นฐาน","Error rate ≤3% ต่อ shift (เพิ่มจาก 5%)","t30",
+"SOP audit checklist รายวัน + defect tally","คุณภาพงาน tier 1 ผ่าน standard ≥97% ทุก shift",
+"Error rate >12% ข้าม SOP บ่อย ต้องแก้ซ้ำ ≥3 ครั้ง/สัปดาห์",
+"Error 4–12% ทำตามได้แต่ต้องเช็กบ่อย",
+"Error ≤3% ทำตาม SOP ถูกต้องสม่ำเสมอ ≥4 สัปดาห์ติดต่อกัน",
+"Error 0% ต่อเนื่อง ≥3 สัปดาห์ สอนเพื่อนได้และไม่เกิด error ในกลุ่ม"),
+
+item("ใช้เครื่องมือสำนักงาน","คล่องภายใน 10 วันทำงาน ถามซ้ำ ≤1 ครั้ง/เรื่อง","t30",
+"Competency checklist เครื่องมือ ผ่าน self-test ≥90%","ลดเวลา onboarding และ dependency ต่อ senior",
+"ผ่าน 3 สัปดาห์ยังต้องให้ช่วยทุกครั้ง ถามซ้ำ >5 ครั้ง/เรื่อง",
+"ใช้ได้แต่ช้า ถามซ้ำ 2–4 ครั้ง/เรื่อง ยังต้อง supervise",
+"คล่องภายใน 10 วัน ถามซ้ำ ≤1 ครั้ง/เรื่อง ทำได้อิสระ",
+"คล่องก่อน 10 วัน self-test ≥95% แชร์ shortcut/tip ให้ทีม"),
+
+item("การตรงต่อเวลาและวินัย","มาสาย ≤0 ครั้ง/เดือน แจ้งทุกครั้งที่ไม่สามารถมาได้","t30",
+"Attendance record รายเดือน ไม่มี unplanned absence","ลดการ disruption workflow ของทีมจาก absenteeism",
+"มาสาย >4 ครั้ง/เดือน หรือขาดงานโดยไม่แจ้ง ≥1 ครั้ง",
+"มาสาย 2–4 ครั้ง แจ้งล่วงหน้าบางครั้ง",
+"มาสาย ≤1 ครั้ง/เดือน แจ้งล่วงหน้าทุกครั้ง",
+"ไม่เคยสาย แจ้ง >24 ชม. ล่วงหน้าทุกครั้งที่จำเป็น"),
+
+item("การเรียนรู้และปรับตัว","ทำงานอิสระใน scope ตนเองได้ภายใน 20 วัน","t60",
+"Independence score จาก supervisor (ครั้งที่ต้องช่วย/สัปดาห์) ≤1","ลดภาระ supervisor ใน onboarding ≥60%",
+"ผ่าน 30 วันยังต้องสอนซ้ำ >3 เรื่องเดิม ทำงานอิสระไม่ได้",
+"ปรับตัวได้แต่ช้า ต้องให้คำแนะนำ >2 ครั้ง/สัปดาห์ หลัง 30 วัน",
+"ทำงานอิสระใน scope ตนเองได้ภายใน 20 วัน ≤1 ครั้ง/สัปดาห์ที่ต้องช่วย",
+"ทำงานอิสระก่อน 15 วัน เริ่มช่วย junior คนอื่นได้ด้วย"),
+]},
+
+{n:"Basic Knowledge",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:20,items:[
+item("รู้จักสินค้าหลักและกฎระเบียบ","Mini-test ≥80% (เพิ่มจาก 70%)","t60",
+"Test score sheet + practical demo ผ่าน examiner","ลดความผิดพลาดจากความไม่รู้สินค้า/กฎระเบียบ",
+"Mini-test <55% หลังอบรม 4 สัปดาห์",
+"Test 55–79% ตอบคำถามพื้นฐานบางข้อไม่ได้",
+"Test ≥80% ตอบคำถามพื้นฐานได้ถูกต้องทั้งหมด",
+"Test ≥92% อธิบายได้ชัด พร้อม use case จริง และสอนเพื่อนได้"),
+
+item("ทักษะการสื่อสารเป็นลายลักษณ์อักษร","Email/memo ที่เขียน ≥85% ไม่ต้องแก้","t60",
+"Email/memo review score จาก supervisor ≥3.3/4","ลดเวลา review และ re-work ของ supervisor",
+"Email/memo ต้องแก้ >50% ไม่ชัดเจน สะกดผิดบ่อย",
+"ต้องแก้ 25–50% ของที่เขียน ชัดเจนบางส่วน",
+"≥85% ไม่ต้องแก้ ชัดเจน ภาษาสุภาพ ถูก format",
+"≥95% ไม่ต้องแก้ เขียนได้เป็นมืออาชีพ ใช้เป็น template ได้"),
+]},
+
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:25,items:[
+item("รับคำสั่งและรายงานปัญหา","ปัญหาค้าง >1 ชม. โดยไม่แจ้ง = 0 ครั้ง (เข้มขึ้นจาก 2 ชม.)","t30",
+"Issue log พร้อม timestamp การแจ้งและการแก้ไข","ป้องกัน cascade error จากการรายงานช้า",
+"ไม่แจ้งปัญหา ค้าง >3 ชม. เกิด ≥2 ครั้ง ทำให้งานเสียหาย",
+"แจ้งช้า 1–3 ชม. หรืออธิบายไม่ครบ ต้องถามซ้ำ",
+"แจ้งภายใน 1 ชม. ทุกครั้ง พร้อมรายละเอียดครบ",
+"แจ้งภายใน 30 นาที พร้อมสิ่งที่ลองทำแล้วและแนวทางที่ขอความช่วยเหลือ"),
+
+item("การสื่อสารกับเพื่อนร่วมทีม","Peer collaboration score ≥3.2/4 ทุกเดือน","t30",
+"Peer survey รายเดือน + จำนวน unsolicited help ที่ให้","บรรยากาศทีมดีขึ้น ไม่มี friction ที่ supervisor ต้องแก้",
+"Peer score <2.5 มี friction กับเพื่อน ≥2 เรื่อง/เดือน ต้อง escalate",
+"Peer score 2.5–3.1 ทำงานร่วมได้แต่ passive",
+"Peer score ≥3.2 ช่วยเหลือเมื่อขอ ไม่มี friction ที่ต้อง escalate",
+"Peer score ≥3.6 ริเริ่มช่วยโดยไม่รอ ทีมให้ feedback บวกเชิงรุก"),
+
+item("การรายงานความคืบหน้า","ส่ง daily update ครบทุกวัน ≥95% ของวันทำงาน","t30",
+"Daily standup log หรือ task board อัปเดต","ลดเวลา supervisor ถามสถานะ ≥70%",
+"ส่ง update <60% ของวัน supervisor ต้องถามทุกวัน",
+"ส่ง 60–94% ของวัน บางวันต้องถาม",
+"ส่ง ≥95% ของวัน ครบ what done/what next/blocker",
+"ส่ง 100% ก่อน EOD พร้อม insight เพิ่มเติม ไม่ต้องถาม"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P2  OFFICER
+═══════════════════════════════════════════════════ */
+P2:{g:"Operation",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:15,items:[
+item("Positive Thinking","Peer feedback ≥3.3/4 ทุก 30 วัน","t30",
+"360° mini-survey รายเดือน (5 คน)","Team morale index ไม่ลดลงจาก baseline",
+"Peer score <2.3 มีพฤติกรรมลบกระทบทีม บันทึก incident log",
+"Score 2.3–3.2 ปกติ ไม่มีผลเชิงบวก",
+"Score ≥3.3 ทัศนคติบวกสม่ำเสมอ ทีม trust",
+"Score ≥3.7 เป็นแรงบันดาลใจ สร้างบรรยากาศบวกแม้ในวันที่ทีมกดดัน"),
+
+item("Ownership — Self QC","Error หลัง self-check ≤1.5% (เข้มขึ้นจาก 2%)","t30",
+"Personal QC log พร้อม defect rate trend","ลด rework ที่ supervisor ต้องทำ ≥80%",
+"Error หลัง self-check >10% ไม่ตรวจจริง rework สูง",
+"Error 3–10% ตรวจบ้างแต่ไม่ครบถ้วน",
+"Error ≤1.5% ตรวจครบทุกครั้ง มี personal checklist",
+"Error ≤0.5% checklist evolve ตามปัญหาที่พบ ไม่มี defect ที่ไปถึง customer"),
+
+item("ความรับผิดชอบต่อ Deadline","ส่งงานตรงเวลา ≥97% ไม่ต้องตาม","t30",
+"Task completion dashboard อัปเดตทุกวัน","ลดขวดน้ำ workflow ≥90%",
+"ส่งช้า >3 ครั้ง/เดือน ต้องตามงานทุกชิ้น",
+"ส่งตรงเวลา 85–96% ต้องเตือนบางครั้ง",
+"ส่ง ≥97% ไม่ต้องตาม แจ้ง early warning เมื่อเสี่ยง",
+"ส่ง 100% และเสนอส่งก่อนกำหนดเมื่องานเสร็จเร็ว"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:35,items:[
+item("ใช้เครื่องมือเฉพาะทาง","ใช้ได้อิสระภายใน 25 วัน เร็วกว่า benchmark 10%","t30",
+"Tool proficiency test ≥85% + benchmark time comparison","ลด dependency ต่อ senior ≥90% ภายใน 30 วัน",
+"ผ่าน 40 วันยังต้องช่วย >3 ครั้ง/สัปดาห์",
+"ใช้ได้แต่ช้ากว่า benchmark 1.5–2 เท่า",
+"อยู่ใน benchmark ภายใน 25 วัน ≤1 ครั้ง/สัปดาห์ที่ต้องช่วย",
+"เร็วกว่า benchmark ≥20% ภายใน 20 วัน และสอนขั้นสูงเพื่อนได้"),
+
+item("แก้ไขงานตนเองเบื้องต้น","แก้ไขได้ ≥88% โดยไม่ขอช่วย","t60",
+"Self-resolution log พร้อม category ของปัญหา","ลดภาระ supervisor ต่อการแก้ปัญหา daily ≥70%",
+"แก้ได้ <45% ต้องให้ supervisor ช่วยทุกครั้ง",
+"แก้ได้ 45–87% ปัญหาบางประเภทยังต้องรอ",
+"แก้ได้ ≥88% ระบุ root cause ได้ แก้เองส่วนใหญ่",
+"แก้ได้ ≥96% พร้อมสร้าง fix-guide ให้ทีมใช้ต่อ"),
+
+item("การตรวจสอบงานก่อนส่ง","Rework request จาก supervisor ≤2 ครั้ง/เดือน","t30",
+"Rework log รายเดือน + ประเภทของ error","ลด wasted effort supervisor ใน review ≥60%",
+"Rework request >8 ครั้ง/เดือน งานไม่ผ่าน standard บ่อย",
+"Rework 3–8 ครั้ง/เดือน ตรวจแต่ไม่ครบ",
+"Rework ≤2 ครั้ง/เดือน ตรวจครบก่อนส่งทุกครั้ง",
+"Rework 0 ครั้ง/เดือน ต่อเนื่อง ≥6 สัปดาห์"),
+
+item("การพัฒนาตนเอง","เรียนรู้ทักษะใหม่ ≥1 เรื่อง/เดือน และนำมาใช้จริงวัดได้","t60",
+"Learning log + evidence การ apply ในงานจริง","เพิ่ม capability ทีมโดยไม่ต้องส่งอบรมนอก",
+"ไม่มีการเรียนรู้เพิ่มเติมใดนอกจากที่ถูกสั่ง",
+"เรียนรู้เมื่อถูกขอ ไม่ริเริ่มเอง ไม่มี evidence การ apply",
+"เรียนรู้ ≥1 เรื่อง/เดือน มี evidence การนำมาใช้จริงในงาน",
+"เรียนรู้ ≥2 เรื่อง/เดือน และแชร์ความรู้ให้ทีมเป็น knowledge session"),
+
+item("Product Knowledge ขั้น Intermediate","ตอบคำถาม product ได้ ≥88% โดยไม่ต้องค้นข้อมูล","t60",
+"Product knowledge test 20 ข้อ ≥88% + role-play สถานการณ์","ลดเวลา handle query ต่อ case ≥30%",
+"Test <60% ตอบผิดหรือต้องค้นทุกข้อ",
+"Test 60–87% ตอบได้บางข้อ ต้องค้นข้อมูลบ่อย",
+"Test ≥88% ตอบคล่อง ไม่ต้องค้น ≥88% ของ query",
+"Test ≥96% อธิบายเชิงลึกได้ แนะนำ product ที่เหมาะสมได้เองเชิงรุก"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:25,items:[
+item("Teamwork & Collaboration","ไม่มี conflict escalate ถึง supervisor และ peer score ≥3.3","t60",
+"Peer collaboration survey + conflict log","ลด supervisor time ใน conflict resolution ≥100%",
+"Conflict ≥2 ครั้ง/เดือนที่ต้อง escalate ทีมทำงานติดขัด",
+"เกิด friction แต่แก้เองก่อน escalate peer score 2.8–3.2",
+"ไม่มี conflict escalate peer ≥3.3 ช่วยเหลือเมื่อขอ",
+"Peer ≥3.7 ริเริ่มช่วยโดยไม่รอ เป็น go-to สำหรับทีม"),
+
+item("สื่อสารข้อมูลชัดเจน","ถามซ้ำ ≤1 ครั้งต่อเรื่อง (เข้มขึ้นจาก 2)","t30",
+"Communication clarity log จาก supervisor + จำนวนครั้งที่ถามซ้ำ","ลด back-and-forth communication ≥60%",
+"ต้องถามซ้ำ ≥5 ครั้ง/เรื่อง ข้อมูลไม่ครบหรือผิด",
+"ถามซ้ำ 2–4 ครั้ง/เรื่อง",
+"ถามซ้ำ ≤1 ครั้ง/เรื่อง ข้อมูลครบ ชัดเจน",
+"สื่อสารครั้งเดียวครบ เลือก format เหมาะ ผู้รับ act ได้ทันที"),
+]},
+{n:"Basic Knowledge",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:25,items:[
+item("กฎระเบียบ ข้อบังคับ Compliance","Compliance test ≥90% และ 0 violation ตลอด probation","t60",
+"Compliance test score + violation log","ลด legal/regulatory risk ขององค์กร",
+"Test <65% หรือมี compliance violation ≥1 ครั้ง",
+"Test 65–89% เข้าใจหลักการแต่ยังมีจุดเสี่ยง",
+"Test ≥90% และ 0 violation ตลอด probation",
+"Test ≥96% 0 violation และช่วย spot compliance risk ของทีมได้"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P3  SENIOR
+═══════════════════════════════════════════════════ */
+P3:{g:"Operation",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:15,items:[
+item("Ownership — รับผิดชอบผลลัพธ์ทีม","Escalate เฉพาะเรื่องเกินขอบเขต <15% ของครั้งทั้งหมด","t30",
+"Escalation log พร้อม justification ทุกครั้ง","ลดภาระ supervisor ใน day-to-day operation ≥70%",
+"Escalate >60% ของทุกปัญหา แม้เรื่องเล็ก supervisor overloaded",
+"Escalate 30–60% มักรอ supervisor สั่งก่อนลงมือ",
+"Escalate <15% แก้ปัญหา operation ระดับ P1–P2 ได้เอง",
+"Escalate เฉพาะ strategic เท่านั้น <5% พร้อม brief ครบก่อน escalate"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:35,items:[
+item("Troubleshoot เฉพาะหน้าโดยไม่รอ","แก้ปัญหา operation เองได้ ≥4 ครั้ง/เดือน ภายใน 2 ชม.","t30",
+"Troubleshooting log: ปัญหา/เวลาแก้/solution ทุกครั้ง","ลด downtime จากปัญหา operation ≥50%",
+"แก้เองได้ <2 ครั้ง/เดือน รอ supervisor เสมอ downtime สูง",
+"แก้ได้ 2–3 ครั้ง/เดือน ปัญหายากยังขอช่วย",
+"แก้ได้ ≥4 ครั้ง/เดือน ภายใน 2 ชม. เฉลี่ย",
+"แก้ได้ทุกปัญหา operation ภายใน 1 ชม. สร้าง troubleshooting playbook ให้ทีม"),
+
+item("ทำงานซับซ้อนโดยไม่ต้องคุมเข้ม","จบ multi-step ≥2 งาน/เดือน check-in ≤1 ครั้ง/งาน","t60",
+"Project log พร้อม check-in count และ outcome ทุกชิ้น","เพิ่ม output ทีมโดยไม่ต้องเพิ่ม headcount",
+"ต้อง check-in >5 ครั้ง/งาน ทำไม่สำเร็จโดยลำพัง",
+"check-in 2–5 ครั้ง/งาน ต้องรับคำแนะนำตลอด",
+"check-in ≤1 ครั้ง/งาน จบได้ตามเป้า ≥2 งาน/เดือน",
+"ทำงานซับซ้อนสำเร็จโดยไม่ check-in เลย ส่งก่อน deadline สม่ำเสมอ"),
+
+item("Initiative — สร้าง Process Improvement","เสนอและ implement improvement ≥1 ชิ้น/เดือน วัดผลได้","t60",
+"Improvement log พร้อม before/after metric ทุกชิ้น","ลด waste หรือเพิ่ม throughput ≥10% ต่อ improvement",
+"ไม่เสนอ idea ใดเลย ทำตามระบบเดิมทั้งหมด",
+"เสนอ idea แต่ไม่มีข้อมูลสนับสนุน ไม่ได้ implement จริง",
+"เสนอและ implement ≥1/เดือน มี before/after metric",
+"Implement ≥2/เดือน ผลลัพธ์วัดได้ชัด นำเสนอต่อทีมได้"),
+
+item("Knowledge Sharing","จัด sharing session ≥1 ครั้ง/เดือน ผู้เข้าร่วม ≥85%","t60",
+"Sharing session log + attendance + feedback score ≥3.3/4","เพิ่ม team knowledge ลด single point of failure",
+"ไม่แบ่งปันความรู้ใดๆ ทีมต้องหาข้อมูลเอง",
+"แบ่งปันเมื่อถูกขอ ไม่ริเริ่ม ไม่มี structured sharing",
+"จัด ≥1 session/เดือน attendance ≥85% feedback ≥3.3",
+"สร้าง knowledge base ที่ทีมอ้างอิงได้ตลอด ลด repeat question ≥70%"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:20,items:[
+item("ประสานงานข้ามทีมได้อิสระ","จบ cross-team task ≥2/เดือน ภายใน SLA โดยไม่ขอช่วย","t60",
+"Cross-team task log พร้อม SLA achievement rate","ลดเวลา delivery ของ cross-team project ≥30%",
+"ประสาน cross-team ไม่ได้ ต้องให้ supervisor ทำแทน",
+"ประสานได้แต่ช้ากว่า SLA บ่อย ต้องให้ supervisor ช่วยบางส่วน",
+"จบ ≥2 cross-team task/เดือน ตาม SLA โดยไม่ขอช่วย",
+"จบ ≥3 task/เดือน ก่อน SLA สร้าง relationship ระยะยาวกับ counterpart"),
+
+item("Presentation และการนำเสนอผลงาน","นำเสนอต่อ P4+ ผ่านโดยไม่ต้องแก้หลักใหญ่ ≥85%","t60",
+"Presentation feedback log พร้อม revision count","ลดเวลา P4+ ใน review และ coaching ≥50%",
+"Presentation ถูก reject หรือต้องแก้ >3 จุดหลัก ≥50% ของครั้ง",
+"ผ่านแต่ต้องแก้ 2–3 จุดหลัก 15–50% ของครั้ง",
+"ผ่าน ≥85% ไม่ต้องแก้จุดหลัก P4+ เข้าใจและ act ได้เลย",
+"ผ่าน ≥95% P4+ ใช้เป็น reference สำหรับ P1–P2"),
+]},
+{n:"Supervisory",bg:"#FBEAF0",tc:"#72243E",bc:"#ED93B1",w:15,items:[
+item("Buddy ดูแล P1 ใหม่","P1 mentee ทำ SOP ≥85% ภายใน 10 วันทำงาน","t90",
+"P1 mentee SOP audit score + timeline record","ลดเวลา P1 onboarding ≥30% เทียบ benchmark",
+"Mentee ทำ SOP ได้ <50% หลัง 3 สัปดาห์ mentoring ไม่ effective",
+"Mentee ทำได้ 50–84% ใช้เวลา mentor มากกว่า 10 วัน",
+"Mentee ทำได้ ≥85% ภายใน 10 วันทำงาน report progress ทุกสัปดาห์",
+"Mentee ทำได้ ≥95% ภายใน 7 วัน และเริ่มช่วย P1 คนอื่นได้"),
+
+item("การจัดการเวลาและ Prioritization","งาน high-priority เสร็จก่อน deadline 100% ไม่มี re-prioritization กะทันหัน","t30",
+"Priority matrix อัปเดตรายวัน + missed deadline log (ต้องเป็น 0)","ลดความเสียหายจาก missed priority ≥100%",
+"งาน high-priority พลาด deadline ≥2 ครั้ง ไม่มี priority matrix",
+"พลาด deadline 1 ครั้ง priority ไม่สม่ำเสมอ",
+"งาน high-priority เสร็จก่อน deadline 100% ไม่มีพลาด",
+"เสร็จก่อนกำหนดทุกชิ้น และช่วย re-prioritize งานทีมได้เชิงรุก"),
+]},
+{n:"Management Skill",bg:"#E1F5EE",tc:"#085041",bc:"#5DCAA5",w:15,items:[
+item("การ Escalate อย่างถูกต้อง","Escalate ถูก issue ≥90% และทุกครั้งมี context + recommendation","t30",
+"Escalation log พร้อม quality score จาก supervisor","ลดเวลา supervisor ใน re-work เพราะ incomplete escalation",
+"Escalate ผิดประเภท >40% หรือ escalate ไม่ทันการณ์ ทำให้เสียหาย",
+"Escalate ถูก 60–89% แต่ขาด context หรือ recommendation บางครั้ง",
+"Escalate ถูก ≥90% ทุกครั้งมี context + recommendation",
+"Escalate ถูก 100% พร้อม solution options ≥2 ข้อ ให้ supervisor เลือก"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P4  EXPERT
+═══════════════════════════════════════════════════ */
+P4:{g:"Operation",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:10,items:[
+item("Ownership — Expert Quality","งานส่งมอบผ่าน standard ≥95% และ rework <5%","t30",
+"Quality scorecard ทุกชิ้น + rework log","ลด cost of poor quality ≥80% เทียบ baseline",
+"งาน expert ผิด standard >25% rework สูง ต้นทุนบาน",
+"ผิด standard 10–25% rework 10–25%",
+"ผ่าน ≥95% rework <5% documentation ครบ",
+"ผ่าน ≥99% rework 0% สร้าง quality standard ใหม่ให้ทีม"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:35,items:[
+item("เป็น Subject Matter Expert","Go-to ≥4 ครั้ง/เดือน ตอบถูกต้อง ≥90%","t60",
+"SME request log + accuracy tracking","ลดเวลา supervisor ตอบ technical question ≥80%",
+"ไม่มีใคร refer มา ยังต้องถามคนอื่น ≥3 เรื่อง/สัปดาห์",
+"มีคน refer 1–3 ครั้ง/เดือน ตอบได้บางเรื่อง",
+"Go-to ≥4 ครั้ง/เดือน ตอบถูก ≥90%",
+"Go-to ≥6 ครั้ง/เดือน ตอบถูก 100% สร้าง knowledge base ที่ใช้งานได้จริง"),
+
+item("สรุป Report / Analysis","Report peer review ≥3.7/4 ทุกฉบับ ส่งตรงเวลา 100%","t30",
+"Peer review score + timeliness log ทุกฉบับ","ลดเวลา management ใน decision-making ≥40%",
+"Report ขาดข้อมูลสำคัญ review <3.0 ต้องแก้ ≥3 รอบ",
+"ครบแต่ไม่ชัด review 3.0–3.6 แก้ 1–2 รอบ",
+"Review ≥3.7 ส่งตรงเวลา 100% management ใช้ตัดสินใจได้เลย",
+"Review ≥3.9 ส่งก่อน deadline ถูกใช้เป็น template ทีม"),
+
+item("Process Improvement ในสายงาน","Implement ≥1 improvement/60 วัน ลด waste ≥15%","t60",
+"Improvement project log พร้อม ROI calculation","ลด operational cost หรือเพิ่ม throughput ≥15% ต่อ project",
+"ไม่มี improvement จริง ทำตามระบบเดิมทั้งหมด",
+"เสนอ idea แต่ implement ไม่สำเร็จ หรือผล <5%",
+"Implement ≥1/60 วัน ลด waste ≥15% มี ROI calc",
+"Implement ≥2/60 วัน ผล >25% นำเสนอต่อ management สำเร็จ"),
+
+item("Technical Documentation","สร้าง SOP/guide ≥1 ชิ้น/เดือน ที่ P1–P2 ใช้ได้จริง","t60",
+"Document usage log + feedback score ≥3.5/4 จาก users","ลดเวลา onboarding P1 ≥30% ลด repeat question",
+"ไม่มี document ใด ทีมต้องถามซ้ำทุกครั้ง",
+"มี document แต่ outdated หรือไม่ครบ ยังต้องถาม >50%",
+"≥1 SOP/guide/เดือน feedback ≥3.5 ลด repeat question ≥50%",
+"Document library ครบ ทีม self-serve ได้ >80% โดยไม่ต้องถาม"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:20,items:[
+item("เจรจากับบุคคลภายนอก","ปิดการเจรจาได้ ≥85% ด้วยตนเอง ผลตรงเป้า","t90",
+"Negotiation outcome log พร้อม target vs actual","สร้าง external relationship ที่มีมูลค่าต่อองค์กร",
+"ต้องให้ P3+ เข้าแก้สถานการณ์ ≥55% ผลการเจรจาต่ำกว่าเป้า",
+"ต้องให้ P3+ ช่วย 25–54% ผลตรงเป้าบางส่วน",
+"ปิดได้ ≥85% ด้วยตนเอง ผลตรงเป้า",
+"ปิดได้ ≥95% ผลดีกว่าเป้า สร้าง long-term relationship ได้"),
+]},
+{n:"Supervisory",bg:"#FBEAF0",tc:"#72243E",bc:"#ED93B1",w:20,items:[
+item("QC งาน P1–P2","Defect rate P1–P2 ลดลง ≥25% ภายใน 60 วัน","t60",
+"Weekly defect rate dashboard + root cause log","ลด rework cost ของทีม ≥25% เทียบ baseline",
+"Defect rate ไม่เปลี่ยนหรือเพิ่มขึ้น QC ไม่ effective",
+"ลดลง 1–24% QC ไม่สม่ำเสมอ ไม่มี system",
+"ลดลง ≥25% มี QC system + root cause log สม่ำเสมอ",
+"ลดลง ≥40% QC system ทำให้ทีม self-detect ได้ก่อนส่ง"),
+
+item("การ Mentor P1–P2 อย่างเป็นระบบ","Mentee ≥2 คน มี skill improvement ≥20% ภายใน 60 วัน","t60",
+"Skill assessment before/after + mentee satisfaction ≥3.5/4","เพิ่ม team capability โดยไม่ต้องจ้างเพิ่ม",
+"Mentee ไม่มีพัฒนาการ หรือ satisfaction <2.5",
+"Mentee พัฒนาขึ้น 5–19% satisfaction 2.5–3.4",
+"Mentee ≥2 คน skill up ≥20% satisfaction ≥3.5",
+"Mentee ≥2 คน skill up ≥35% satisfaction ≥3.8 ส่งต่อ mentoring เองได้"),
+]},
+{n:"Management Skill",bg:"#E1F5EE",tc:"#085041",bc:"#5DCAA5",w:15,items:[
+item("จัดสรรงานในกลุ่มย่อย","Bottleneck >1 วัน = 0 ครั้ง/เดือน Team utilization 75–88%","t90",
+"Workload distribution log รายสัปดาห์ + bottleneck incident log","เพิ่ม throughput ทีม ≥20% ลด overtime",
+"Bottleneck >2 วัน ≥3 ครั้ง/เดือน ทีม overload/idle ไม่สมดุล",
+"Bottleneck >1 วัน 1–2 ครั้ง/เดือน จัดสรรบ้างแต่ reactive",
+"Bottleneck >1 วัน = 0 ครั้ง utilization 75–88% สม่ำเสมอ",
+"0 bottleneck utilization optimal ทีม productive ไม่มี burnout"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P5  SUPERVISOR
+═══════════════════════════════════════════════════ */
+P5:{g:"Junior Management",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:15,items:[
+item("Ownership — KPI ทีม","KPI ทีม ≥90% ของ target (เข้มขึ้นจาก 85%)","t30",
+"Weekly KPI dashboard พร้อม action plan ทุกครั้ง","ผลประกอบการของหน่วยงานตาม target",
+"KPI <70% ไม่มีแผนแก้ไข หรือโทษสภาวะ/ทีมแทนรับผิดชอบ",
+"KPI 70–89% มีแผนแต่ไม่ครอบคลุม ไม่ track จริง",
+"KPI ≥90% มีแผนชัดเจน track รายวัน รับผิดชอบ",
+"KPI ≥97% proactive ป้องกันก่อนเกิด มี leading indicator"),
+
+item("Integrity และเป็นตัวอย่าง","0 integrity incident + team retention 100%","t30",
+"Integrity log (ต้องเป็น 0) + retention record","สร้าง culture ที่ยั่งยืน ลด turnover cost",
+"มี integrity incident หรือ team member ลาออกเพราะพฤติกรรมตัวเอง",
+"ไม่มี incident แต่ทีม trust score <3.0 ไม่ได้ active เป็นตัวอย่าง",
+"0 incident team trust ≥3.2/4 เป็นตัวอย่าง integrity ชัดเจน",
+"0 incident team trust ≥3.8 ทีมอ้างถึงโดยธรรมชาติ"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:30,items:[
+item("วิเคราะห์ข้อมูลรายสัปดาห์","ส่ง weekly data summary + action plan ≥3 actionable insight/สัปดาห์","t30",
+"Weekly report พร้อม implemented action log","ตัดสินใจด้วยข้อมูล ลด gut-feel decision",
+"ส่ง report <55% ของสัปดาห์ หรือไม่มี insight เลย",
+"ส่งครบ แต่ action plan ไม่ actionable หรือไม่ implement จริง",
+"ส่งครบ มี ≥3 actionable insight/สัปดาห์ implement ≥80%",
+"ส่งก่อน deadline มี predictive insight ที่ป้องกันปัญหาล่วงหน้าได้จริง"),
+
+item("Risk & Contingency Plan","Plan ครอบคลุม top 5 ความเสี่ยง ทดสอบ simulation ≥1 ครั้ง","t60",
+"Risk register + contingency plan doc + simulation record","ลด impact จาก unplanned events ≥60%",
+"ไม่มี plan หรือ plan ใช้ไม่ได้จริงเมื่อทดสอบ",
+"มีแต่ครอบคลุม <60% ความเสี่ยงหลัก ไม่ได้ simulate",
+"ครอบคลุม top 5 risk มี trigger condition + simulation จริง",
+"Plan ครบ simulate + debrief ทีม update รายเดือน ทีมพร้อม execute"),
+
+item("Data-Driven Decision Making","≥85% ของ decision มีข้อมูลและ data trail ชัดเจน","t30",
+"Decision log พร้อม data source ทุก decision","ลด decision error rate ≥40%",
+"ตัดสินใจจาก feeling >50% ไม่มี data trail",
+"มีข้อมูลบ้างแต่ไม่ครบ data trail ไม่ชัดเจน 50–84%",
+"≥85% ของ decision มี data trail ชัดเจน",
+"100% มี data trail และใช้ predictive analytics วางแผนล่วงหน้า"),
+
+item("การ Monitor KPI ทีมรายวัน","Dashboard KPI อัปเดต real-time แจ้ง alert ทันทีเมื่อ KPI เสี่ยง","t30",
+"KPI dashboard URL + alert log + corrective action time","ลดเวลาตอบสนองต่อ KPI ที่เสี่ยง ≥70%",
+"ไม่มี KPI dashboard อัปเดต <50% ไม่รู้ KPI status ทีม",
+"Dashboard มีแต่ไม่แจ้ง alert ทันทีเมื่อเสี่ยง",
+"Dashboard อัปเดต real-time แจ้ง alert ทันที มี corrective action plan",
+"Dashboard + automated alert + corrective action trigger อัตโนมัติ"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:15,items:[
+item("จัดการ Conflict ระดับทีม","Conflict ที่ escalate ถึง manager = 0 และแก้ภายใน 24 ชม.","t60",
+"Conflict log พร้อม resolution time + outcome","ลด team productivity loss จาก conflict",
+"Conflict escalate ≥3 ครั้ง/เดือน หรือแก้ไม่ได้ส่งผลต่องาน",
+"Escalate 1–2 ครั้ง/เดือน แก้ได้แต่ใช้เวลา >48 ชม.",
+"0 escalate แก้ได้ภายใน 24 ชม. ทุกครั้ง",
+"0 escalate แก้ทันที <4 ชม. และ prevent ได้ล่วงหน้า"),
+]},
+{n:"Supervisory",bg:"#FBEAF0",tc:"#72243E",bc:"#ED93B1",w:20,items:[
+item("สอนงาน OJT และให้ Feedback","Subordinate KPI เพิ่มขึ้น ≥15% หลัง 60 วัน","t60",
+"KPI before/after comparison + OJT session log","เพิ่ม team output ≥15% โดยไม่เพิ่ม headcount",
+"KPI ไม่เปลี่ยนหรือลด ไม่ได้ทำ OJT จริง",
+"KPI เพิ่ม 1–14% OJT ไม่ structured feedback ไม่ชัด",
+"KPI เพิ่ม ≥15% structured OJT regular feedback + IDP draft",
+"KPI เพิ่ม ≥25% IDP execute จริง subordinate request mentor ต่อ"),
+
+item("Psychological Safety","Team survey Psych Safety ≥3.3/4 ใน 60 วัน","t60",
+"Anonymous team survey + trend comparison","ทีมกล้าพูดปัญหา ลด hidden issue ที่ escalate ช้า",
+"Score <2.5 ทีมกลัวพูดปัญหา hidden issue สะสม",
+"Score 2.5–3.2 บางคนกล้า บางคนไม่กล้า",
+"Score ≥3.3 ส่วนใหญ่กล้าพูด มีช่องทาง feedback ชัดเจน",
+"Score ≥3.7 ทุกคนกล้าพูด มีระบบ feedback ที่ act ได้จริง"),
+
+item("รายงาน Manager อย่างมีประสิทธิภาพ","Weekly report ครบ ≥95% ของสัปดาห์ ไม่มี surprise ≥2 ชม.","t30",
+"Weekly report log + surprise incident log (ต้องเป็น 0)","ลด management time ในการถาม status ≥70%",
+"ส่ง report <55% ของสัปดาห์ surprise >2 ครั้ง/เดือน",
+"ส่ง 55–94% ของสัปดาห์ surprise 1–2 ครั้ง/เดือน",
+"ส่ง ≥95% ของสัปดาห์ 0 surprise ≥2 ชม.",
+"ส่งก่อน deadline ทุกสัปดาห์ 0 surprise มี proactive flag ล่วงหน้า"),
+]},
+{n:"Leadership",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:20,items:[
+item("สร้าง Successor Plan","มี successor สำหรับ key role ≥2 คน ใน 60 วัน พร้อม cover 80%","t60",
+"Successor plan doc + coverage assessment","ลด single point of failure ในทีม",
+"ไม่มี successor plan หาก key person ลา งานหยุดทันที",
+"มี plan แต่ไม่ develop จริง coverage <50%",
+"Successor ≥2 คน มี dev plan cover ≥80% ของ key role",
+"Successor cover ≥95% และสามารถ act ได้ทันทีโดยไม่ต้อง brief"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P6  ASST.MANAGER
+═══════════════════════════════════════════════════ */
+P6:{g:"Junior Management",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:10,items:[
+item("Ownership — Budget ส่วนงาน","Budget variance ≤7% ทุกเดือน (เข้มขึ้นจาก 10%)","t60",
+"Monthly P&L report + variance analysis ทุกเดือน","ควบคุม cost ให้อยู่ใน plan ≥93%",
+"Variance >18% หรือไม่ track ค่าใช้จ่ายเลย",
+"Variance 8–18% track แต่ไม่มีแผนแก้ทันเวลา",
+"Variance ≤7% มี monthly review + corrective action ทันเวลา",
+"Variance ≤3% มี cost saving initiative ≥1/เดือน + forecast ถูก"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:30,items:[
+item("วิเคราะห์และ Implement Improvement","Implement ≥2/เดือน มี before/after data + ROI","t60",
+"Improvement tracker พร้อม ROI calculation ทุกชิ้น","ลด cost หรือเพิ่ม revenue ≥X บาทที่วัดได้",
+"ไม่มี improvement implement จริงตลอด probation",
+"Implement ≥1 แต่ไม่มี data/ROI รองรับ",
+"Implement ≥2/เดือน มี data before/after + ROI",
+"Implement ≥3/เดือน ROI ที่ present ต่อ director ได้ชัดเจน"),
+
+item("Data Analysis สำหรับการตัดสินใจ","ส่ง data analysis report ≥2/เดือน ที่ director ใช้ตัดสินใจได้","t30",
+"Analysis report log + director decision record","ลดเวลา director ใน analysis ≥50%",
+"ไม่ส่ง analysis หรือ analysis ไม่ actionable ต้องทำเองใหม่",
+"ส่ง ≥1/เดือน แต่ director ต้องปรับ analysis ก่อน use",
+"ส่ง ≥2/เดือน director ใช้ตัดสินใจได้ทันที",
+"ส่ง ≥3/เดือน director ขอ analysis เชิงรุก ใช้ใน board deck"),
+
+item("Cross-functional Collaboration","Lead cross-functional project ≥1/เดือน เสร็จตาม scope และ deadline","t60",
+"Project completion log พร้อม scope/timeline/outcome","ลดเวลา deliver cross-function ≥25%",
+"ไม่ได้ lead cross-functional project ใด passive เท่านั้น",
+"เข้าร่วมแต่ไม่ได้ drive งานเสร็จช้าหรือ scope เปลี่ยน",
+"Lead ≥1/เดือน เสร็จตาม scope + deadline",
+"Lead ≥2/เดือน deliver ahead of schedule ทีมอื่น request ให้ lead อีก"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:20,items:[
+item("โน้มน้าวทีมสู่เป้า 10% Growth","Team target achievement ≥93% + engagement ≥3.3/4","t60",
+"Target tracking dashboard + monthly engagement survey","เพิ่ม team performance ≥10% ตามเป้า",
+"Achievement <75% engagement <2.5 ทีมไม่เห็นทิศทาง",
+"Achievement 75–92% engagement 2.5–3.2",
+"Achievement ≥93% engagement ≥3.3 ทีมเข้าใจเป้าและ commit",
+"Achievement ≥100% engagement ≥3.7 ทีม self-motivated ขอ stretch target"),
+
+item("บริหารการประชุมอย่างมีประสิทธิภาพ","Minutes ภายใน 2 ชม. (เข้มขึ้นจาก 24 ชม.) action item ครบ 100%","t30",
+"Meeting minutes log + action item completion tracking","ลดเวลา follow-up หลังประชุม ≥70%",
+"ไม่ส่ง minutes หรือ action item ขาด ≥50%",
+"ส่งช้า >24 ชม. action item 70–99%",
+"Minutes ภายใน 2 ชม. action item ครบ 100%",
+"Minutes ภายใน 1 ชม. owner+deadline+priority ทุกข้อ action item close ≥90%"),
+
+item("การสื่อสาร Upward ต่อ Director","รายงาน director ≥95% ไม่ต้องถามซ้ำ ไม่มี surprise","t30",
+"Director feedback log + surprise incident log (ต้องเป็น 0)","ลด director time ใน management ≥40%",
+"Director ต้องถามซ้ำ >3 ครั้ง/เรื่อง หรือมี surprise ≥2 ครั้ง/เดือน",
+"ถามซ้ำ 1–3 ครั้ง surprise 1 ครั้ง/เดือน",
+"≥95% ไม่ต้องถามซ้ำ 0 surprise",
+"Director ขอ input เชิงรุก ใช้ report ใน board presentation"),
+]},
+{n:"Supervisory",bg:"#FBEAF0",tc:"#72243E",bc:"#ED93B1",w:20,items:[
+item("Delegation ที่มีประสิทธิภาพ","Task completion หลัง delegate ≥90% (เข้มขึ้นจาก 85%)","t60",
+"Delegation log + completion rate + skill development note","เพิ่ม team capacity ≥30% โดยไม่เพิ่ม headcount",
+"Completion <65% delegate ไม่เหมาะสม หรือ micromanage",
+"Completion 65–89% delegate แต่ support ไม่พอ",
+"Completion ≥90% delegate เหมาะสม ติดตามสม่ำเสมอ",
+"Completion ≥97% delegate พัฒนาทักษะ subordinate ชัดเจน ขอรับงานเพิ่ม"),
+
+item("Talent Development ในทีม","Direct report ≥1 คน มี IDP พร้อม next role pathway + ผ่าน ≥1 milestone ใน 60 วัน","t60",
+"IDP document + milestone achievement record","เพิ่ม internal talent pipeline ลด external hiring cost",
+"ไม่มี IDP ใดเลย direct report ไม่เติบโต",
+"มี IDP แต่ไม่มี next role pathway หรือ milestone ไม่ชัด",
+"≥1 คน มี IDP ครบ + ผ่าน ≥1 milestone ใน 60 วัน",
+"≥2 คน IDP ครบ ผ่าน ≥2 milestone ต่อคน ใน 60 วัน"),
+]},
+{n:"Leadership",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:20,items:[
+item("สร้าง Motivation ในภาวะกดดัน","Retention 100% + engagement ไม่ลดลง >0.1 pt ในช่วงวิกฤต","t60",
+"Retention record + monthly engagement trend","ลด turnover cost และรักษา productivity ในช่วงวิกฤต",
+"Team ลาออก ≥1 คน หรือ engagement ลด >0.5 pt",
+"Engagement ลด 0.2–0.5 pt ไม่ได้ address ต้นเหตุ",
+"Retention 100% engagement ลดไม่เกิน 0.1 pt มีมาตรการ morale",
+"Retention 100% engagement เพิ่มขึ้นแม้ในวิกฤต ทีม resilient ชัดเจน"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P7  MANAGER
+═══════════════════════════════════════════════════ */
+P7:{g:"Junior Management",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:10,items:[
+item("Ownership ระดับแผนก","Dept. KPI ≥93% + budget variance ≤6%","t30",
+"Dept. KPI dashboard + P&L report รายเดือน","ผลประกอบการแผนกตาม target ≥93%",
+"KPI <80% หรือ variance >13% ไม่มีแผนแก้ชัด",
+"KPI 80–92% variance 7–13% มีแผนแต่ช้า",
+"KPI ≥93% variance ≤6% แผนครบ implement ทันเวลา",
+"KPI ≥98% variance ≤3% เป็น benchmark ให้แผนกอื่น"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:30,items:[
+item("Process Improvement ระดับแผนก","ลด cycle time หรือ cost ≥18% ใน ≥1 process ภายใน 90 วัน","t90",
+"Process map before/after + cost/time saving calculation","ลด operational cost ≥18% หรือเพิ่ม capacity โดยไม่เพิ่มคน",
+"ไม่มี improvement จริง หรือ process เดิมยังใช้อยู่",
+"มีแต่ผล <5% ไม่มี measurement",
+"ลด ≥18% มี before/after + ROI calculation",
+"ลด ≥28% เป็น case study ให้ division นำเสนอต่อ VP"),
+
+item("Strategic Planning ระดับแผนก","ส่ง quarterly plan พร้อม resource allocation ใน 30 วัน","t30",
+"Quarterly plan document + milestone tracking","ทิศทางแผนกชัดเจน ทีมทำงานสอดคล้อง strategy",
+"ไม่มี quarterly plan หรือ plan ไม่มี milestone ที่วัดได้",
+"มี plan แต่ขาด resource allocation หรือ risk mitigation",
+"Quarterly plan ครบ resource allocation + risk plan ใน 30 วัน",
+"Plan ได้รับ approval จาก Director พร้อม alignment ทีม 100%"),
+
+item("P&L Management ระดับแผนก","Budget accuracy ≥94% ส่ง monthly P&L ทันทุกเดือน","t30",
+"Monthly P&L report พร้อม variance analysis + corrective action","ควบคุม P&L แผนก ให้ผลต่าง ≤6%",
+"ไม่ส่ง P&L หรือ accuracy <80% variance >13%",
+"ส่งช้า >5 วัน accuracy 80–93%",
+"ส่งทัน accuracy ≥94% มี variance analysis + corrective action",
+"ส่งก่อน deadline มี forecast แม่นยำ ≥95% และ trend analysis"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:20,items:[
+item("Conflict Management ข้ามแผนก","Resolution ≤3 วันทำการ (เข้มขึ้น) NPS ≥7.5/10","t60",
+"Conflict resolution log พร้อม timeline + NPS survey","ลด productivity loss จาก cross-team conflict ≥80%",
+"Conflict แก้ >2 สัปดาห์ หรือ NPS <5 ทีมไม่ยอมรับผล",
+"แก้ใน 4–14 วัน NPS 5–7.4",
+"แก้ใน ≤3 วัน NPS ≥7.5 ทุกฝ่ายยอมรับผล",
+"แก้ใน ≤1 วัน NPS ≥9 สร้าง framework ป้องกัน conflict ซ้ำ"),
+
+item("OKR Alignment ระดับแผนก","Team OKR alignment ≥85% กับ company OKR (เข้มขึ้นจาก 80%)","t30",
+"OKR alignment matrix + weekly review record","ทีมทำงานสอดคล้อง strategy 85% ขึ้นไป",
+"Team OKR ไม่สอดคล้อง company >35%",
+"Alignment 60–84% ทีมเข้าใจ OKR แต่ทำงานไม่สอดคล้อง",
+"Alignment ≥85% งานประจำวันสอดคล้อง OKR ทุกคนรู้ OKR ตัวเอง",
+"Alignment ≥97% ทีม self-manage ตาม OKR ไม่ต้องถาม"),
+
+item("การสื่อสารต่อ VP/Director","Presentation ต่อ Director ผ่าน ≥88% ไม่ต้องแก้หลักใหญ่","t30",
+"Presentation feedback log + revision history","ลดเวลา Director ใน review + coach ≥50%",
+"ถูก reject หรือต้องแก้หลักใหญ่ ≥50% ของครั้ง",
+"ผ่านแต่ต้องแก้ 25–49% ของครั้ง",
+"ผ่าน ≥88% ไม่ต้องแก้หลักใหญ่ Director ใช้ตัดสินใจได้",
+"ผ่าน 100% Director ขอ present ต่อ VP/Board"),
+]},
+{n:"Supervisory",bg:"#FBEAF0",tc:"#72243E",bc:"#ED93B1",w:15,items:[
+item("บริหาร Resource (คน งบ เวลา)","Utilization 75–88% + variance ≤6% ไม่มี burnout sign","t60",
+"Resource utilization dashboard + burnout indicator survey","เพิ่ม team efficiency ≥20% ลด overtime cost",
+"Utilization <60% หรือ >90% มีสัญญาณ burnout variance >13%",
+"Utilization 60–74% variance 7–13% บางส่วนสูญเปล่า",
+"Utilization 75–88% variance ≤6% ไม่มี burnout sign",
+"Utilization optimal variance ≤3% ทีม productive + satisfied"),
+
+item("Talent Development","Direct report ≥1 คน ได้รับ promotion หรือ role expansion ใน 90 วัน","t90",
+"IDP + promotion/expansion record พร้อม timeline","เพิ่ม internal talent pipeline ลด external hiring",
+"ไม่มี direct report ที่พัฒนาขึ้นเลย ไม่มี IDP ใด",
+"มี IDP แต่ไม่มี milestone ชัดเจน ไม่ execute จริง",
+"≥1 คน ได้รับ promotion/role expansion ใน 90 วัน",
+"≥50% ของ direct report มีพัฒนาการตาม IDP ชัดเจนใน 90 วัน"),
+]},
+{n:"Leadership",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:15,items:[
+item("Coaching P4–P5 อย่างเป็นระบบ","P4 mentee มี IDP + ผ่าน ≥2 milestone ใน 60 วัน","t60",
+"Mentee IDP doc + milestone record + mentee satisfaction ≥3.5","เพิ่มความพร้อมของ P4 ในการเลื่อนระดับ",
+"ไม่มี IDP หรือ mentee ไม่ progress เลย",
+"มี IDP แต่ milestone ไม่ชัด ผ่านได้ ≤1 milestone",
+"Mentee มี IDP ครบ ผ่าน ≥2 milestone ใน 60 วัน",
+"Mentee ผ่าน ≥3 milestone ใน 60 วัน ขอ coaching เพิ่มเอง"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P8  DEPUTY DIRECTOR
+═══════════════════════════════════════════════════ */
+P8:{g:"Middle Management",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:10,items:[
+item("Ownership — P&L + Culture","P&L variance ≤4% + culture score ไม่ลด","t30",
+"Monthly P&L + culture survey (quarterly)","ควบคุม cost ≤4% variance + รักษา culture score",
+"Variance >9% หรือ culture score ลด >0.5 pt",
+"Variance 5–9% culture ลด 0.1–0.5 pt",
+"Variance ≤4% culture คงที่หรือดีขึ้น มี corrective action ทันเวลา",
+"Variance ≤2% culture เพิ่ม ≥0.3 pt เป็น benchmark division"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:30,items:[
+item("Business Intelligence & Market Analysis","ส่ง BI report ≥1/เดือน ที่ถูก cited ใน management decision","t30",
+"BI report log + decision citation record","ลดเวลา director ใน market research ≥60%",
+"ไม่ส่ง report หรือ report ถูก reject ทุกครั้ง",
+"ส่งแต่ insight ทั่วไป ไม่ถูก cite ใน decision",
+"ส่ง ≥1/เดือน ถูก cite ใน ≥1 management decision/เดือน",
+"ส่ง ≥2/เดือน director นำไป brief VP/Board เป็นประจำ"),
+
+item("High-Level Process Engineering","Deliver process redesign ≥1 ชิ้น/60 วัน ที่ได้รับ approval","t60",
+"Process design doc + approval record + ROI forecast","ลด operational cost ≥20% หรือเพิ่ม capacity ≥25%",
+"ไม่ deliver process redesign ใด หรือถูก reject ทุกชิ้น",
+"มีแต่ขาด ROI ชัดเจน ผ่าน review แต่ไม่ถูก implement",
+"Deliver ≥1/60 วัน ได้ approval และอยู่ใน roadmap",
+"Deliver ≥1/60 วัน implement จริง และวัดผลได้ภายใน probation"),
+
+item("Strategic Resource Allocation","Resource utilization ≥83% + ROI ≥ target ใน 60 วัน","t60",
+"Resource allocation dashboard + ROI tracking","เพิ่ม return จาก resource investment ≥10%",
+"Utilization <65% หรือ ROI ต่ำกว่า target >15%",
+"Utilization 65–82% ROI ต่ำกว่า target 5–15%",
+"Utilization ≥83% ROI ≥ target มี quarterly reallocation plan",
+"Utilization optimal ROI สูงกว่า target ≥12% มี predictive model"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:20,items:[
+item("Executive Stakeholder Management","Stakeholder satisfaction ≥3.6/4 ไม่มี surprise ≥2 ชม.","t30",
+"Stakeholder survey รายไตรมาส + surprise log (ต้องเป็น 0)","สร้าง executive trust และ reduce friction ≥80%",
+"Surprise ≥3 ครั้ง/เดือน satisfaction <3.0",
+"Surprise 1–2 ครั้ง satisfaction 3.0–3.5",
+"0 surprise satisfaction ≥3.6 มี structured update cadence",
+"0 surprise satisfaction ≥3.9 stakeholder ขอ input เชิงรุก"),
+
+item("High-Stakes Negotiation","Closure rate ≥75% ผลลัพธ์ตรงหรือดีกว่าเป้า","t60",
+"Negotiation outcome log พร้อม target vs actual ทุกครั้ง","สร้าง deal value และ strategic partnership",
+"Closure <38% หรือ outcome ต่ำกว่าเป้า >20%",
+"Closure 38–74% outcome ตรงเป้าบางส่วน",
+"Closure ≥75% outcome ตรงเป้า ≥90%",
+"Closure ≥88% outcome ดีกว่าเป้า ≥15% เป็น best practice"),
+
+item("Board/C-Suite Communication","Presentation ต่อ C-Suite ผ่าน ≥85% ไม่ต้องแก้หลักใหญ่","t60",
+"Presentation feedback log + C-Suite decision record","สร้าง credibility ในระดับ C-Suite",
+"Presentation ถูก reject หรือต้องแก้หลักใหญ่ >40% ของครั้ง",
+"ผ่านแต่ต้องแก้ 20–40% C-Suite ยังมีข้อกังวลมาก",
+"ผ่าน ≥85% C-Suite ใช้ตัดสินใจได้เลย",
+"ผ่าน ≥95% C-Suite ขอ present ต่อ board หรือ external"),
+]},
+{n:"Supervisory",bg:"#FBEAF0",tc:"#72243E",bc:"#ED93B1",w:20,items:[
+item("Performance Architecture","KPI + OKR tracking 100% ภายใน 25 วัน และ review cadence ชัดเจน","t30",
+"KPI/OKR dashboard + review meeting log","ทุก direct report รู้ KPI ตนเองและมี accountability",
+"KPI tracking <60% หลัง 60 วัน ไม่มี review cadence",
+"60–99% บางคนไม่มี KPI/OKR ชัดเจน",
+"100% ภายใน 25 วัน review cadence ชัด ทุกคนรับผิดชอบ",
+"ระบบ auto-track ทุกคน self-monitor + escalate ได้เองเมื่อเสี่ยง"),
+
+item("Empowerment & Decision Making","Decision lead time ลดลง ≥35% จาก baseline","t60",
+"Decision log พร้อม lead time before/after + RACI matrix","เพิ่ม agility ขององค์กร ลด bottleneck ≥35%",
+"Lead time เพิ่มขึ้น หรือยังเป็น bottleneck ทุกเรื่อง",
+"ลดลง 1–34% แต่ยัง centralize เรื่องสำคัญ",
+"ลดลง ≥35% มี RACI matrix ทีม decide ได้เองใน scope",
+"ลดลง ≥55% ทีม autonomous เรื่องหลัก เฉพาะ strategic มาถาม"),
+]},
+{n:"Leadership",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:20,items:[
+item("Developing Leaders","Direct report ≥2 คน มี IDP + next role pathway + ผ่าน ≥1 milestone ใน 60 วัน","t60",
+"IDP doc + milestone record + satisfaction ≥3.5","สร้าง leadership pipeline ในองค์กร",
+"ไม่มี IDP ให้ direct report เลย",
+"มี IDP แต่ไม่มี next role หรือ milestone ไม่ชัด",
+"≥2 คน มี IDP ครบ + ผ่าน ≥1 milestone ใน 60 วัน",
+"≥60% ของ direct report มี IDP execute จริง ≥2 milestone/คน"),
+
+item("Organizational Culture","Culture score ≥3.5/4 ใน scope + ไม่มี key talent flight risk","t60",
+"Culture survey + flight risk assessment รายเดือน","รักษา key talent + สร้าง culture ที่ดึงดูดคนเก่ง",
+"Culture score <2.8 มีปัญหา culture ชัดเจน หรือมี flight risk ≥2 คน",
+"Score 2.8–3.4 มี flight risk 1 คน",
+"Score ≥3.5 ไม่มี flight risk key talent stay 100%",
+"Score ≥3.8 เป็น best employer ใน division key talent แนะนำให้คนอื่นมาทำงาน"),
+]},
+]},
+
+/* ═══════════════════════════════════════════════════
+   P9  DIRECTOR
+═══════════════════════════════════════════════════ */
+P9:{g:"Middle Management",cats:[
+{n:"Core Values",bg:"#EEEDFE",tc:"#3C3489",bc:"#AFA9EC",w:10,items:[
+item("Ownership — P&L + Vision ทั้งฝ่าย","Annual P&L variance ≤4% + culture score ไม่ลด + 0 key talent resign","t30",
+"Quarterly P&L + annual culture survey + retention record","P&L ตาม plan ≥96% วัฒนธรรมองค์กรแข็งแกร่ง",
+"P&L variance >10% หรือ culture ลด >0.5 หรือ key talent resign ≥1 คน",
+"Variance 5–10% culture ลด 0.1–0.5 หรือมี flight risk",
+"Variance ≤4% culture คงที่หรือดีขึ้น 0 key talent resign",
+"Variance ≤2% culture เพิ่ม ≥0.4 เป็น benchmark company-wide"),
+]},
+{n:"Functional",bg:"#E6F1FB",tc:"#0C447C",bc:"#85B7EB",w:30,items:[
+item("Strategic Resource Allocation & ROI","ROI ≥ target +12% ใน Q1 มี reallocation plan ทุกไตรมาส","t60",
+"Resource allocation dashboard + ROI report ทุกไตรมาส","เพิ่ม return จากทุก resource investment ≥12%",
+"ROI ต่ำกว่า target >15% ไม่มี reallocation plan",
+"ROI ต่ำกว่า target 1–15% reallocation plan ไม่ครบ",
+"ROI ≥ target +12% มี quarterly reallocation plan",
+"ROI สูงกว่า target ≥20% model ถูกใช้ระดับ company"),
+
+item("P&L Management ทั้งฝ่าย","Budget accuracy ≥96% ส่ง P&L ทุกเดือน พร้อม forecast ≥90%","t60",
+"Monthly P&L + quarterly forecast + variance analysis","ควบคุมค่าใช้จ่ายฝ่าย ≤4% variance",
+"Accuracy <85% ไม่ส่ง P&L ทุกเดือน หรือ forecast ผิด >20%",
+"Accuracy 85–95% ส่งช้า forecast ผิด 10–20%",
+"Accuracy ≥96% ส่งตรงเวลา forecast ผิด <10%",
+"Accuracy ≥98% มี predictive model forecast ผิด <5% board ใช้ plan"),
+
+item("Business Development & Innovation","Initiate ≥1 strategic initiative ที่ board approve ภายใน 90 วัน","t90",
+"Initiative proposal + board approval record + milestone","สร้าง new revenue stream หรือ competitive advantage ที่วัดได้",
+"ไม่มี strategic initiative ใดที่ propose หรือ propose แล้วถูก reject",
+"Propose ≥1 แต่ board ยังไม่ approve หรือ initiative ไม่ strategic",
+"Propose และ board approve ≥1 initiative ภายใน 90 วัน",
+"Approve ≥1 + early milestone ผ่าน board ขอ accelerate"),
+]},
+{n:"Communication",bg:"#FAEEDA",tc:"#633806",bc:"#EF9F27",w:20,items:[
+item("สร้าง Strategic Network","Partnership/lead ≥3/ไตรมาส อย่างน้อย ≥1 ปิดเป็น partnership จริง","t90",
+"Partnership pipeline tracker + signed agreement record","สร้าง business value จาก strategic network",
+"ไม่มี new partnership หรือ lead เลยตลอด probation",
+"≤2 lead/ไตรมาส ไม่ progress สู่ partnership",
+"≥3 lead/ไตรมาส ≥1 ปิดเป็น partnership จริง",
+"≥4 lead/ไตรมาส ≥2 ปิดเป็น partnership มีมูลค่าวัดได้"),
+
+item("Board & Investor Communication","Board confidence vote ≥85% ใน proposal ที่ present","t60",
+"Board meeting record + vote/approval rate","Board trust ในทิศทางฝ่าย ≥85%",
+"Board confidence <65% proposal ถูก reject บ่อย",
+"Confidence 65–84% board อนุมัติแต่มีเงื่อนไขหลายข้อ",
+"Confidence ≥85% board approve proposal หลักโดยไม่มีเงื่อนไขใหญ่",
+"Confidence ≥95% board ขอ present ใน external forum"),
+
+item("Industry Thought Leadership","เป็น speaker/panelist ≥1 งาน/ไตรมาส และได้รับอ้างอิงใน media","t90",
+"Speaking engagement record + media mention tracker","สร้าง brand องค์กรในระดับ industry",
+"ไม่ได้เข้า event ภายนอกเลย ไม่มี external presence",
+"เข้า event แต่ passive ไม่ได้ speak ไม่มี media mention",
+"เป็น speaker ≥1 งาน/ไตรมาส มี media mention ≥1 ครั้ง",
+"Keynote speaker ≥1 งาน/ไตรมาส ถูก quote ใน tier-1 media"),
+]},
+{n:"Leadership",bg:"#EAF3DE",tc:"#27500A",bc:"#97C459",w:25,items:[
+item("Change Management ระดับฝ่าย","Adoption rate ≥80% (เข้มขึ้น) ภายใน 90 วัน + 0 key talent resign","t90",
+"Change adoption survey + retention record + change log","Transform ฝ่ายสำเร็จ 80% และรักษา key talent",
+"Adoption <48% แรงต้านสูง key talent resign",
+"Adoption 48–79% แรงต้านบางส่วน plan ไม่ครบ",
+"Adoption ≥80% มี structured change plan ครบ 0 key talent resign",
+"Adoption ≥93% ทีม champion change เอง เป็น case study"),
+
+item("กำหนดทิศทางและค่านิยม","Team alignment ≥85% ภายใน 60 วัน","t60",
+"Alignment survey + culture assessment","ทีมทำงานสอดคล้อง direction ≥85%",
+"Alignment <58% ทีมไม่เข้าใจทิศทาง หรือขัดแย้ง value",
+"Alignment 58–84% เข้าใจบางส่วน ไม่ internalize",
+"Alignment ≥85% ทีมอธิบาย direction ได้เอง ทำงานตาม value",
+"Alignment ≥93% ทีม self-select decision ตาม value โดยไม่ต้องถาม"),
+
+item("Developing Senior Leaders","Senior leader ≥1 คน มี succession plan + ผ่าน ≥2 milestone ใน 90 วัน","t90",
+"Succession plan doc + milestone record + readiness score","สร้าง leadership pipeline ระดับ Deputy Director",
+"ไม่มี succession plan ใด ไม่มี senior leader ที่พัฒนา",
+"มี plan แต่ไม่ execute จริง milestone ผ่าน 0",
+"≥1 senior leader มี succession plan + ผ่าน ≥2 milestone ใน 90 วัน",
+"≥2 senior leader ผ่าน ≥3 milestone readiness score ≥80%"),
+]},
+{n:"Management Skill",bg:"#E1F5EE",tc:"#085041",bc:"#5DCAA5",w:15,items:[
+item("Strategic Planning ระยะยาว","ส่ง 3-year strategic plan + annual milestone ใน 60 วัน board approve","t60",
+"Strategic plan doc + board approval record","ทิศทางฝ่ายชัดเจน สอดคล้อง company strategy",
+"ไม่มี plan หรือ plan ไม่มี milestone board reject",
+"มี plan แต่ขาด resource/risk ไม่ได้ board approve",
+"Plan ครบ board approve ทีมเข้าใจ milestone 100%",
+"Plan board approve + ดำเนินการ milestone แรกสำเร็จภายใน probation"),
+
+item("OKR Management ระดับฝ่าย","Dept. OKR completion ≥88% ทุกไตรมาส cascade ครบ","t30",
+"OKR dashboard + cascade record + completion rate","ผลลัพธ์ฝ่ายสอดคล้อง company OKR ≥88%",
+"OKR completion <70% หรือไม่ cascade ถึงระดับ individual",
+"Completion 70–87% cascade แต่บางคนไม่รู้ OKR ตนเอง",
+"Completion ≥88% cascade ครบ ทุกคนรู้ OKR + review รายสัปดาห์",
+"Completion ≥96% OKR เชื่อมกับ daily decision ของทุกคน"),
+]},
+]},
+};// end LV
+
+const ORD=["P1","P2","P3","P4","P5","P6","P7","P8","P9"];
+const GRP={Operation:["P1","P2","P3","P4"],"Junior Management":["P5","P6","P7"],"Middle Management":["P8","P9"]};
+let SC={},TLF={},curP="P1";
+ORD.forEach(p=>{TLF[p]="all"});
+
+function sk(p,ci,ii){return p+"_"+ci+"_"+ii}
+function setS(p,ci,ii,v){
+  const k=sk(p,ci,ii);SC[k]=(SC[k]===v)?undefined:v;
+  const id=p+ci+ii;
+  document.querySelectorAll('[data-k="'+k+'"]').forEach(b=>{
+    b.classList.remove("on");
+    if(SC[k]!==undefined&&parseInt(b.dataset.v)===SC[k])b.classList.add("on");
+  });
+  // update score display badge (visible in print)
+  const sd=document.getElementById("sd"+id);
+  if(sd){
+    if(SC[k]===undefined){sd.style.display="none";sd.className="score-display";}
+    else{
+      const labels=["","1 — ต้องปรับปรุง","2 — พอใช้","3 — ดี","4 — ดีเยี่ยม"];
+      sd.style.display="";sd.className="score-display s"+SC[k];sd.textContent="▶ "+labels[SC[k]];
+    }
+  }
+  upd(p);
+}
+
+// collect comments from textarea elements per item key
+function getCmt(p,ci,ii){
+  const id=p+ci+ii;
+  const rp=document.getElementById("rp"+id);
+  if(!rp)return"";
+  const ta=rp.querySelector("textarea");
+  return ta?ta.value.trim():"";
+}
+
+function formatDate(d){if(!d)return"—";const[y,m,dd]=d.split("-");return `${dd}/${m}/${y}`;}
+
+function exportPDF(){
+  const name=document.getElementById("empName").value.trim()||"(ไม่ระบุชื่อ)";
+  const dept=document.getElementById("empDept").value.trim()||"—";
+  const evaluator=document.getElementById("evalName").value.trim()||"—";
+  const startD=formatDate(document.getElementById("empStart").value);
+  const evalD=formatDate(document.getElementById("evalDate").value)||(new Date().toLocaleDateString("th-TH"));
+  const p=curP;
+  const L=LV[p];
+
+  // compute weighted avg for this level
+  let wt=0,ws=0,done=0,tot=0;
+  L.cats.forEach((c,ci)=>{
+    let cd=0,cs=0,cc=c.items.length;
+    c.items.forEach((it,ii)=>{const k=sk(p,ci,ii);cc;tot++;if(SC[k]!==undefined){done++;cd++;cs+=SC[k];}});
+    if(cc>0){ws+=(cd>0?cs/cd:0)*(c.w/100);wt+=(cd/cc)*(c.w/100);}
+  });
+  const avg=done>0?(ws/(wt||1)):null;
+  const avgTxt=avg?avg.toFixed(2):"—";
+  let verdict="รอประเมิน",vcolor="#888";
+  if(avg){
+    if(avg>=3.2){verdict="✓ ผ่าน Probation";vcolor="#15803d";}
+    else if(avg>=2.5){verdict="⚠ ต้องพัฒนาเพิ่ม (PIP)";vcolor="#92400e";}
+    else{verdict="✗ ไม่ผ่าน — ไม่ต่อสัญญา";vcolor="#991b1b";}
+  }
+
+  // fill pdf header
+  document.getElementById("ph-name").textContent=name;
+  document.getElementById("ph-level").textContent=p+" — "+L.g;
+  document.getElementById("ph-dept").textContent=dept;
+  document.getElementById("ph-evaluator").textContent=evaluator;
+  document.getElementById("ph-start").textContent=startD;
+  document.getElementById("ph-evaldate").textContent=evalD;
+  document.getElementById("ph-score").textContent=avgTxt+" / 4.00 ("+Math.round(done/Math.max(tot,1)*100)+"% สมบูรณ์)";
+  const banner=document.getElementById("pdfBanner");
+  banner.style.display="block";banner.style.background=avg?(avg>=3.2?"#dcfce7":avg>=2.5?"#fef9c3":"#fee2e2"):"#f5f5f3";
+  banner.style.color=vcolor;banner.style.border="1.5px solid "+vcolor;banner.textContent="ผลการประเมิน: "+verdict;
+
+  document.getElementById("pdfHeader").style.display="block";
+  document.getElementById("exportBar").style.display="none";
+
+  // show all panels for print, hide others
+  document.querySelectorAll(".lpanel").forEach(w=>{
+    w.style.display=w.dataset.lv===p?"block":"none";
+  });
+
+  // change title
+  const origTitle=document.title;
+  document.title="ประเมิน_Probation_"+name.replace(/\s+/g,"_")+"_"+p+"_"+evalD.replace(/\//g,"-");
+
+  window.print();
+
+  // restore
+  setTimeout(()=>{
+    document.title=origTitle;
+    document.getElementById("pdfHeader").style.display="none";
+    document.getElementById("pdfBanner").style.display="none";
+    document.getElementById("exportBar").style.display="flex";
+    document.querySelectorAll(".lpanel").forEach(w=>{
+      w.style.display=w.dataset.lv===curP?"block":"none";
+    });
+  },500);
+}
+function tog(id){
+  const rp=document.getElementById("rp"+id),ch=document.getElementById("ch"+id);
+  if(!rp)return;const o=rp.classList.toggle("open");if(ch)ch.classList.toggle("open",o);
+}
+function setTL(p,tl){
+  TLF[p]=tl;
+  document.querySelectorAll('.tlbtn[data-p="'+p+'"]').forEach(b=>b.classList.toggle("on",b.dataset.tl===tl));
+  LV[p].cats.forEach((c,ci)=>c.items.forEach((it,ii)=>{
+    const el=document.getElementById("ib"+p+ci+ii);
+    if(el)el.classList.toggle("htl",tl!=="all"&&it.tl!==tl);
+  }));upd(p);
+}
+function upd(p){
+  const cats=LV[p].cats,tl=TLF[p];
+  let wt=0,ws=0,done=0,tot=0;
+  cats.forEach((c,ci)=>{
+    let cd=0,cs=0,cc=0;
+    c.items.forEach((it,ii)=>{
+      if(tl!=="all"&&it.tl!==tl)return;
+      tot++;cc++;const k=sk(p,ci,ii);
+      if(SC[k]!==undefined){done++;cd++;cs+=SC[k];}
+    });
+    if(cc>0){ws+=(cd>0?cs/cd:0)*(c.w/100);wt+=(cd/cc)*(c.w/100);}
+    const bar=document.getElementById("wb"+p+ci);
+    if(bar){const cc2=c.items.filter(it=>tl==="all"||it.tl===tl).length;const cd2=c.items.filter((it,ii)=>{ return (tl==="all"||it.tl===tl)&&SC[sk(p,ci,ii)]!==undefined; }).length; bar.style.width=cc2>0?Math.round(cd2/cc2*100)+"%":"0%";}
+  });
+  const avg=done>0?(ws/(wt||1)):null;
+  document.getElementById("xd").textContent=done;
+  document.getElementById("xt").textContent=tot;
+  document.getElementById("xa").textContent=avg?avg.toFixed(2):"—";
+  document.getElementById("xp").textContent=tot>0?Math.round(done/tot*100)+"%":"—";
+  const hp=document.getElementById("hp"+p);if(hp)hp.innerHTML="คะแนน: <b>"+(avg?avg.toFixed(2):"—")+"</b>";
+  const chip=document.getElementById("xr");chip.className="rchip";
+  if(!avg){chip.classList.add("pend");chip.textContent="รอประเมิน";}
+  else if(avg>=3.2){chip.classList.add("pass");chip.textContent="✓ ผ่าน Probation (≥3.2)";}
+  else if(avg>=2.5){chip.classList.add("warn");chip.textContent="⚠ ต้องพัฒนา (2.5–3.1) → PIP";}
+  else{chip.classList.add("fail");chip.textContent="✗ ไม่ผ่าน (<2.5) → ไม่ต่อสัญญา";}
+}
+function swL(p){
+  curP=p;
+  document.querySelectorAll(".lbtn").forEach(b=>b.classList.toggle("active",b.dataset.lv===p));
+  document.querySelectorAll(".lpanel").forEach(w=>w.classList.toggle("active",w.dataset.lv===p));
+  upd(p);
+}
+function swG(g){
+  document.querySelectorAll(".gbtn").forEach(b=>b.classList.toggle("active",b.dataset.g===g));
+  const levels=GRP[g];
+  document.querySelectorAll(".lbtn").forEach(b=>{
+    b.style.display=levels.includes(b.dataset.lv)?"":"none";
+  });
+  swL(levels[0]);
+}
+// ─── AI Question Generator ────────────────────────────
+const QCACHE={};
+async function genQ(id,p,ci,ii){
+  const btn=document.getElementById("genbtn"+id);
+  const ql=document.getElementById("ql"+id);
+  if(!btn||!ql)return;
+  if(QCACHE[id]){ql.innerHTML=QCACHE[id];ql.classList.add("visible");return;}
+  btn.disabled=true;
+  btn.innerHTML=`<span class="q-spinner"></span> กำลังสร้าง...`;
+  btn.classList.add("loading");
+  const L=LV[p];
+  const cat=L.cats[ci];
+  const it=cat.items[ii];
+  const prompt=`คุณเป็น HR Expert ระดับ Senior สำหรับองค์กรไทย
+
+สร้างคำถามสัมภาษณ์เพื่อประเมิน Probation สำหรับพนักงาน ${p} (${L.g}) ในหัวข้อ "${it.t}"
+หมวด: ${cat.n} (น้ำหนัก ${cat.w}%)
+KPI เป้าหมาย: ${it.k}
+Deliverable: ${it.dlv}
+Business Impact: ${it.imp}
+Rubric ระดับ 3 (ดี): ${it.r[2]}
+Rubric ระดับ 4 (ดีเยี่ยม): ${it.r[3]}
+
+สร้างคำถามสัมภาษณ์ 7 ข้อ ครอบคลุม 5 ประเภท:
+- Behavioral (B): ถามพฤติกรรมในอดีต "เล่าให้ฟังถึงครั้งที่..."
+- Situational (S): ถามสถานการณ์สมมติ "ถ้าเกิด...คุณจะ..."
+- Output (O): ถามผลลัพธ์ที่จับต้องได้ "ตัวเลข/ผลงานที่คุณทำได้คืออะไร"
+- Probe (P): ขุดลึก follow-up "ทำไม...ผลคืออะไร...คุณเรียนรู้อะไร"
+- Challenge (C): ทดสอบความเข้มแข็ง "ถ้าทำไม่ได้ตาม KPI จะทำอย่างไร"
+
+ตอบ JSON เท่านั้น ไม่มีข้อความอื่น ไม่มี markdown:
+[
+  {"n":1,"type":"B","q":"คำถาม..."},
+  {"n":2,"type":"S","q":"คำถาม..."},
+  {"n":3,"type":"O","q":"คำถาม..."},
+  {"n":4,"type":"P","q":"คำถาม..."},
+  {"n":5,"type":"C","q":"คำถาม..."},
+  {"n":6,"type":"B","q":"คำถาม..."},
+  {"n":7,"type":"S","q":"คำถาม..."}
+]`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-6",
+        max_tokens:1000,
+        messages:[{role:"user",content:prompt}]
+      })
+    });
+    const data=await res.json();
+    const raw=data.content.map(x=>x.text||"").join("").trim();
+    const clean=raw.replace(/```json|```/g,"").trim();
+    const qs=JSON.parse(clean);
+    const typeMap={B:"behavioral",S:"situational",O:"output",P:"probe",C:"challenge"};
+    const typeLbl={B:"Behavioral",S:"Situational",O:"Output",P:"Probe",C:"Challenge"};
+    let html="";
+    qs.forEach((q,qi)=>{
+      const qid=id+"_q"+qi;
+      const tc=typeMap[q.type]||"behavioral";
+      const tl=typeLbl[q.type]||q.type;
+      html+=`<div class="qitem">
+        <div class="qnum">${q.n}</div>
+        <div style="flex:1">
+          <div style="display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap">
+            <span class="qtext">${q.q}</span>
+            <span class="qtype ${tc}">${tl}</span>
+          </div>
+          <textarea class="q-ans" rows="2" placeholder="บันทึกคำตอบของพนักงาน..."></textarea>
+          <div class="qscore-row">
+            <span class="qscore-lbl">คะแนนคำตอบนี้:</span>
+            ${[1,2,3,4].map(v=>`<button class="qsb qs${v}" onclick="setQS(this,'${qid}',${v})">${v}</button>`).join("")}
+          </div>
+        </div>
+      </div>`;
+    });
+    ql.innerHTML=html;
+    ql.classList.add("visible");
+    QCACHE[id]=html;
+    btn.innerHTML="↻ สร้างใหม่";
+    btn.classList.remove("loading");
+    btn.disabled=false;
+    btn.onclick=()=>{delete QCACHE[id];genQ(id,p,ci,ii);};
+  }catch(e){
+    ql.innerHTML=`<div style="padding:.5rem .95rem;font-size:12px;color:#991b1b;">เกิดข้อผิดพลาด: ${e.message} — ลองกดสร้างใหม่</div>`;
+    ql.classList.add("visible");
+    btn.innerHTML="↻ ลองอีกครั้ง";
+    btn.classList.remove("loading");
+    btn.disabled=false;
+  }
+}
+function setQS(el,qid,v){
+  const row=el.closest(".qscore-row");
+  row.querySelectorAll(".qsb").forEach(b=>{b.classList.remove("on");});
+  el.classList.add("on");
+}
+// ─── end AI Question Generator ────────────────────────
+
+function build(){
+  const gnav=document.getElementById("gnav"),tnav=document.getElementById("lnav"),lcon=document.getElementById("lcon");
+  let gh="",nh="",lh="";
+  Object.keys(GRP).forEach((g,gi)=>{
+    gh+=`<button class="gbtn${gi===0?" active":""}" data-g="${g}" onclick="swG('${g}')">${g}</button>`;
+  });
+  ORD.forEach((p,pi)=>{
+    const L=LV[p],tot=L.cats.reduce((a,c)=>a+c.items.length,0);
+    const hidden=pi>=4?" style='display:none'":"";
+    nh+=`<button class="lbtn${pi===0?" active":""}" data-lv="${p}" onclick="swL('${p}')"${hidden}>${p}</button>`;
+    lh+=`<div class="lpanel${pi===0?" active":""}" data-lv="${p}">`;
+    lh+=`<div class="lhdr"><div class="lhdr-left"><h3>${p} <span style="font-size:13px;font-weight:400;color:#aaa">${L.g}</span></h3><p>${tot} หัวข้อ · ถ่วงน้ำหนักตามหมวด · กดหัวข้อเพื่อดู Rubric + Deliverable</p></div><div class="score-pill" id="hp${p}">คะแนน: <b>—</b></div></div>`;
+    lh+=`<div class="tlbar"><span class="tllbl">ช่วงเวลา:</span><button class="tlbtn aall on" data-p="${p}" data-tl="all" onclick="setTL('${p}','all')">ทั้งหมด</button><button class="tlbtn a30" data-p="${p}" data-tl="t30" onclick="setTL('${p}','t30')">วันที่ 1–30</button><button class="tlbtn a60" data-p="${p}" data-tl="t60" onclick="setTL('${p}','t60')">วันที่ 31–60</button><button class="tlbtn a90" data-p="${p}" data-tl="t90" onclick="setTL('${p}','t90')">วันที่ 61–90</button></div>`;
+    L.cats.forEach((c,ci)=>{
+      lh+=`<div class="cblock"><div class="chead"><div class="chead-l"><span class="cbadge" style="background:${c.bg};color:${c.tc};border-color:${c.bc}">${c.n}</span><span class="cwt">น้ำหนัก ${c.w}%</span></div><div class="wbar-wrap"><div class="wbar-lbl">ความสมบูรณ์</div><div class="wbar"><div class="wfill" id="wb${p}${ci}" style="width:0%;background:${c.bc}"></div></div></div></div>`;
+      c.items.forEach((it,ii)=>{
+        const id=p+ci+ii,k=sk(p,ci,ii);
+        const tltxt=it.tl==="t30"?"วันที่ 1–30":it.tl==="t60"?"วันที่ 31–60":"วันที่ 61–90";
+        lh+=`<div class="iblock" id="ib${id}">
+          <div class="itop" onclick="tog('${id}')">
+            <div class="itl">
+              <div class="ititle">${it.t}<span class="score-display" id="sd${id}"></span></div>
+              <div class="imeta">
+                <span class="ttag ${it.tl}">${tltxt}</span>
+                <span class="ktag">KPI: ${it.k}</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px">
+              <div class="sbtns" onclick="event.stopPropagation()">`;
+        [1,2,3,4].forEach(v=>{lh+=`<button class="sb s${v}" data-k="${k}" data-v="${v}" onclick="setS('${p}',${ci},${ii},${v})">${v}</button>`;});
+        lh+=`</div><span class="chev" id="ch${id}">▼</span>
+            </div>
+          </div>
+          <div class="rpanel" id="rp${id}">
+            <div class="di-row">
+              <div class="di-cell">
+                <div class="di-label">📄 Deliverable — สิ่งที่ต้องส่งมอบ</div>
+                <div class="di-val">${it.dlv}</div>
+              </div>
+              <div class="di-cell">
+                <div class="di-label">📈 Business Impact — ผลลัพธ์ที่คาดหวัง</div>
+                <div class="di-val">${it.imp}</div>
+              </div>
+            </div>
+            <div class="rgrid">`;
+        ["1 — ต้องปรับปรุง","2 — พอใช้","3 — ดี (ผ่าน)","4 — ดีเยี่ยม"].forEach((lb,ri)=>{
+          lh+=`<div class="rcell"><div class="rscore r${ri+1}">${lb}</div><div class="rdesc">${it.r[ri]}</div></div>`;
+        });
+        lh+=`</div><div class="cmtarea"><textarea rows="2" placeholder="หมายเหตุ / ตัวอย่างพฤติกรรมที่สังเกตได้จริง + วันที่..."></textarea></div>
+            <div class="qpanel" id="qp${id}">
+              <div class="qpanel-head">
+                <div class="qpanel-head-left">
+                  <span class="qpanel-label">🤖 คำถามสัมภาษณ์ AI</span>
+                  <span class="qpanel-sub">5+ ข้อ · Behavioral / Situational / Output / Probe / Challenge</span>
+                </div>
+                <button class="btn-genq" id="genbtn${id}" onclick="genQ('${id}','${p}',${ci},${ii})">✦ สร้างคำถาม</button>
+              </div>
+              <div class="qlist" id="ql${id}"></div>
+            </div>
+          </div>
+        </div>`;
+      });
+      lh+=`</div>`;
+    });
+    lh+=`</div>`;
+  });
+  gnav.innerHTML=gh;tnav.innerHTML=nh;lcon.innerHTML=lh;
+  upd("P1");
+}
+// set default eval date to today
+(function(){const t=new Date();const d=t.toISOString().split('T')[0];document.getElementById('evalDate').value=d;})();
+build();
+</script>
+</body>
+</html>
